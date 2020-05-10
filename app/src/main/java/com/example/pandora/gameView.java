@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.media.MediaPlayer;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
@@ -34,14 +35,14 @@ public class gameView extends SurfaceView implements SurfaceHolder.Callback {
     int starCount;
     float canvasHeight, canvasWidth;
     Star[] stars;
-
+    MediaPlayer one;
 
     static boolean isDecreasing;
 
     public gameView(Context context) {
 
         super(context);
-
+        one=MediaPlayer.create(context,R.raw.one);
 
         Log.i("print", "gameView()");
         thread = new mainThread(getHolder(), this);
@@ -103,7 +104,7 @@ public class gameView extends SurfaceView implements SurfaceHolder.Callback {
     public void surfaceCreated(SurfaceHolder holder) {
         Log.i("print", "surfaceCreated()");
         thread.setRunning(true);
-
+        one.start();
         thread.start();//start the thread
 
 
@@ -119,6 +120,7 @@ public class gameView extends SurfaceView implements SurfaceHolder.Callback {
         boolean retry = true;
         while (retry) {
             try {
+                one.stop();
                 thread.setRunning(false);//stops the thread when user quits
                 thread.join();
             } catch (InterruptedException e) {
